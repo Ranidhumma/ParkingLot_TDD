@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ParkingLotSystemTest<string> {
+public class ParkingLotSystemTest {
     private ParkingLotSystem parkingLotSystem;
     private String status;
 
@@ -96,7 +96,38 @@ public class ParkingLotSystemTest<string> {
             e.printStackTrace();
         }
     }
+    /**
+     * UC4 : Test to check if lot is full update parking Lot Full message to Security Personnel
+     */
+    @Test
+    public void givenAVehicle_WhenParkingLotIsFull_ShouldGiveMessageToSecurityPersonnel() {
+        try {
+            Vehicle vehicle = new Vehicle("Car1");
+            parkingLotSystem.carPark(vehicle);
+            SecurityPersonnel securityPersonnel = new SecurityPersonnel();
+            String status = securityPersonnel.getStatus();
+            Assert.assertEquals("Parking lot is full!!", status);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
 
+    /**
+     * UC5 : Test to check updating parkingLot empty message to Security Personnel
+     */
+    @Test
+    public void givenAVehicle_WhenParkingLotHasSpaceAgain_ShouldGiveMessageToOwner() {
+        try {
+            Vehicle vehicle = new Vehicle("Car1");
+            parkingLotSystem.carPark(vehicle);
+            parkingLotSystem.carUnPark(vehicle);
+            Owner owner = new Owner();
+            String status = owner.getStatus();
+            Assert.assertEquals("Parking lot has Space..", status);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 

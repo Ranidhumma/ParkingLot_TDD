@@ -9,6 +9,4 @@ public class Owner {
     public String getStatus() {
         return status;
     }
-
-
 }
