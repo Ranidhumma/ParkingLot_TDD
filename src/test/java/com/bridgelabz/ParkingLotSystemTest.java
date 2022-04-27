@@ -33,7 +33,7 @@ public class ParkingLotSystemTest {
             parkingLotSystem.carPark(vehicle);
             parkingLotSystem.carPark(vehicle1);
         } catch (ParkingLotException e) {
-            Assert.assertEquals("Parking lot is full", e.getMessage());
+            Assert.assertEquals("!parking lot is full", e.getMessage());
             e.printStackTrace();
         }
 
@@ -74,8 +74,41 @@ public class ParkingLotSystemTest {
             Vehicle vehicle = new Vehicle("Car1");
             parkingLotSystem.carUnPark(vehicle);
         } catch (ParkingLotException e) {
-            Assert.assertEquals("Parking lot is empty", e.getMessage());
+            Assert.assertEquals("parking lot is empty", e.getMessage());
             e.printStackTrace();
         }
     }
+    /**
+     * UC3:Test case to check if lot is full update parkingLot Full message to owner
+     */
+    @Test
+    public void givenAVehicle_WhenParkingLotIsFull_ShouldGiveMessageToOwner() {
+        try {
+            Vehicle vehicle = new Vehicle("Car1");
+            parkingLotSystem.carPark(vehicle);
+            Owner owner = new Owner();
+            String status = owner.getStatus();
+            Assert.assertEquals("Parking lot is full!!", status);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * UC4 : Test to check if lot is full update parking Lot Full message to Security Personnel
+     */
+    @Test
+    public void givenAVehicle_WhenParkingLotIsFull_ShouldGiveMessageToSecurityPersonnel() {
+        try {
+            Vehicle vehicle = new Vehicle("Car1");
+            parkingLotSystem.carPark(vehicle);
+            SecurityPersonnel securityPersonnel = new SecurityPersonnel();
+            String status = securityPersonnel.getStatus();
+            Assert.assertEquals("Parking lot is full!!", status);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
