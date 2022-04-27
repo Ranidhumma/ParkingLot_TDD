@@ -1,10 +1,12 @@
 package com.bridgelabz;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ParkingLotSystemTest {
+public class ParkingLotSystemTest<string> {
     private ParkingLotSystem parkingLotSystem;
+    private String status;
 
     @Before
     public void setUp() throws Exception {
@@ -33,7 +35,7 @@ public class ParkingLotSystemTest {
             parkingLotSystem.carPark(vehicle);
             parkingLotSystem.carPark(vehicle1);
         } catch (ParkingLotException e) {
-            Assert.assertEquals("Parking lot is full", e.getMessage());
+            Assert.assertEquals("!parking lot is full", e.getMessage());
             e.printStackTrace();
         }
 
@@ -62,8 +64,8 @@ public class ParkingLotSystemTest {
             parkingLotSystem.carPark(vehicle);
             parkingLotSystem.carUnPark(vehicle1);
         } catch (ParkingLotException e) {
-            e.printStackTrace();
             Assert.assertEquals("Ask for correct vehicle", e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -73,9 +75,30 @@ public class ParkingLotSystemTest {
         try {
             Vehicle vehicle = new Vehicle("Car1");
             parkingLotSystem.carUnPark(vehicle);
+            Assert.assertEquals("Parking lot is empty", status);
         } catch (ParkingLotException e) {
-            Assert.assertEquals("Parking lot is empty", e.getMessage());
             e.printStackTrace();
         }
     }
+
+    /**
+     * UC3:Test case to check updating parkingLot Full message to owner
+     */
+    @Test
+    public void givenAVehicle_WhenParkingLotIsFull_ShouldGiveMessageToOwner() {
+        try {
+            Vehicle vehicle = new Vehicle("Car1");
+            parkingLotSystem.carPark(vehicle);
+            Owner owner = new Owner();
+            String status = owner.getStatus();
+            Assert.assertEquals("Parking lot is full!!", status);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
+
+
+
+

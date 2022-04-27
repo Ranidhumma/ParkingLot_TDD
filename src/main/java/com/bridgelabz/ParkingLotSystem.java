@@ -1,7 +1,9 @@
 package com.bridgelabz;
 
 public class ParkingLotSystem {
-    Vehicle vehicle = null;
+    public Vehicle vehicle=null;
+    public Owner owner = new Owner();
+    public String message;
 
     /**
      * Method : checking the driver can park the vehicle or not
@@ -10,24 +12,13 @@ public class ParkingLotSystem {
      */
 
     public void carPark(Vehicle vehicle) throws ParkingLotException {
-        if (this.vehicle != null) throw new ParkingLotException("Parking lot is full");
+        if (this.vehicle != null) throw new ParkingLotException("!parking lot is full");
         this.vehicle = vehicle;
-    }
+        if (this.vehicle != null) {
+            String message = "Parking lot is full!!";
+            owner.update(message);
 
-    /**
-     * Method: checking the vehicle is Present or not if Present return true,
-     *
-     * @throws ParkingLotException if parking lot is empty
-     *                             * asked for incorrect vehicle
-     */
-    public void carUnPark(Vehicle vehicle) throws ParkingLotException {
-
-        if (this.vehicle == null) throw new ParkingLotException("Parking lot is empty");
-        if (this.vehicle.equals(vehicle)) {
-            this.vehicle = null;
-            return;
         }
-        throw new ParkingLotException("Ask for correct vehicle");
     }
 
     /**
@@ -38,6 +29,26 @@ public class ParkingLotSystem {
         if (this.vehicle.equals(vehicle)) return true;
         return false;
     }
+
+
+    /**
+     * Method: checking the vehicle is Present or not if Present return true,
+     *
+     * @throws ParkingLotException if parking lot is empty
+     *                             * asked for incorrect vehicle
+     */
+    public void carUnPark(Vehicle vehicle) throws ParkingLotException {
+
+        if (this.vehicle==null) throw new ParkingLotException("parking lot is empty");
+        if (this.vehicle.equals(vehicle)) {
+            this.vehicle = null;
+            if (this.vehicle==null) owner.update("Parking lot has Space..");
+            return;
+        }
+        throw new ParkingLotException("Ask for correct vehicle");
+
+    }
+
 
     /**
      * @return if vehicle is UnPark return true else return false
