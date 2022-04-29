@@ -1,10 +1,11 @@
 package com.bridgelabz;
-
 public class Vehicle {
-   String name;
+    int id;
+    String name;
 
-   public Vehicle (String name){
-       this.name= name;
-   }
-
+    public Vehicle(int id, String name) {
+        this.name = name;
+        this.id = id;
+    }
 }
+
