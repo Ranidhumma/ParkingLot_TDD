@@ -5,7 +5,11 @@ import java.util.Map;
 public class Attendant {
     Owner owner = new Owner();
 
-    public int parkThevehicle (Map<Integer, Vehicle> parkingLotMap) {
+    /**
+     * Method : Park the vehicle method
+     * @return key to park vehicle
+     */
+    public int parkTheVehicle(Map<Integer, Vehicle> parkingLotMap) {
         return owner.getKeyToPark(parkingLotMap);
 
     }

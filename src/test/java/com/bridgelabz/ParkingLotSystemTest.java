@@ -1,5 +1,4 @@
 package com.bridgelabz;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,7 +6,6 @@ import org.junit.Test;
 public class ParkingLotSystemTest {
     private ParkingLotSystem parkingLotSystem;
     private String status;
-
     @Before
     public void setUp() throws Exception {
         parkingLotSystem = new ParkingLotSystem();
@@ -38,7 +36,6 @@ public class ParkingLotSystemTest {
             Assert.assertEquals("!parking lot is full", e.getMessage());
             e.printStackTrace();
         }
-
     }
 
     /*Uc2:Test case for unPark vehicle by calling method unPark, before unPark vehicle, we are parking vehicle return true*/
@@ -132,6 +129,11 @@ public class ParkingLotSystemTest {
             e.printStackTrace();
         }
 }
+
+    /**
+     * UC6 Test case : owner gives the parking lot to Attedant to park the vehicle
+     *
+     */
     @Test
     public void givenAttendant_WhenOwnerGivesTheSlotToParkTheVehicle_ShouldPark() {
         Attendant attendant = new Attendant();
@@ -147,6 +149,20 @@ public class ParkingLotSystemTest {
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
+    }
+    /**
+     * UC7 Test case for driver is finding the location of given vehicle (car)
+     * @throws ParkingLotException
+     */
+    @Test
+    public void givenVehicle_WhenFindVehicle_ShouldReturnKey() throws ParkingLotException {
+        Vehicle vehicle1 = new Vehicle(1, "car1");
+        Vehicle vehicle2 = new Vehicle(2, "car2");
+        parkingLotSystem.carPark(vehicle1);
+        parkingLotSystem.carPark(vehicle2);
+
+        int key = parkingLotSystem.getVehicleLocation(vehicle2);
+        Assert.assertEquals(2, key);
     }
 }
 

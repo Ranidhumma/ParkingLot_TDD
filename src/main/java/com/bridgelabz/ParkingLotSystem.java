@@ -6,16 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 public class ParkingLotSystem {
-    Attendant attendent = new Attendant();
+    Attendant attendant = new Attendant();
     private static final int MAX_PARKING_CAPACITY = 2;
     private final Map<Integer, Vehicle> parkingLotMap;
     public Vehicle vehicle;
     List<ParkingLotObserver> observers;
-    private Object attendant;
+//    private Object attendant;
+
     public ParkingLotSystem() {
         observers = new ArrayList<>();
         parkingLotMap = new LinkedHashMap<>();
     }
+
     /**
      * Method : checking the driver can park the vehicle or not
      *
@@ -27,7 +29,7 @@ public class ParkingLotSystem {
             throw new ParkingLotException("parking Lot is Full");
 
         if (parkingLotMap.size() < MAX_PARKING_CAPACITY) {
-            int key = attendent.parkThevehicle(parkingLotMap);
+            int key = attendant.parkTheVehicle(parkingLotMap);
             this.parkingLotMap.put(key, vehicle);
         }
 
@@ -38,6 +40,32 @@ public class ParkingLotSystem {
             }
         }
     }
+
+    /*
+     * Method: checking the vehicle is Present or not if Present return true,
+     *
+     * @throws ParkingLotException if parking lot is empty
+     */
+    public void carUnPark(Vehicle vehicle) throws ParkingLotException {
+        Integer key = 0;
+        if (this.parkingLotMap.isEmpty()) throw new ParkingLotException("parking lot is empty");
+        if (this.parkingLotMap.containsValue(vehicle)) {
+            for (Map.Entry map : parkingLotMap.entrySet()) {
+                if (map.getValue() == vehicle) {
+                    key = (Integer) map.getKey();
+                }
+            }
+            this.parkingLotMap.remove(key);
+            if (this.parkingLotMap.size() < MAX_PARKING_CAPACITY) {
+                for (ParkingLotObserver observer : observers) {
+                    observer.update("Parking lot has space");
+                }
+            }
+            return;
+        }
+        throw new ParkingLotException("Ask for correct vehicle");
+    }
+
     /*
      * @return if vehicle is parked return true else return false
      */
@@ -67,28 +95,8 @@ public class ParkingLotSystem {
         return 0;
     }
 
-    /*
-     * Method: checking the vehicle is Present or not if Present return true,
-     *
-     * @throws ParkingLotException if parking lot is empty
-     */
-    public void carUnPark(Vehicle vehicle) throws ParkingLotException {
-        Integer key = 0;
-        if (this.parkingLotMap.isEmpty()) throw new ParkingLotException("parking lot is empty");
-        if (this.parkingLotMap.containsValue(vehicle)) {
-            for (Map.Entry map : parkingLotMap.entrySet()) {
-                if (map.getValue() == vehicle) {
-                    key = (Integer) map.getKey();
-                }
-            }
-            this.parkingLotMap.remove(key);
-            if (this.parkingLotMap.size() < MAX_PARKING_CAPACITY) {
-                for (ParkingLotObserver observer : observers) {
-                    observer.update("Parking lot has space");
-                }}
-            return;
-        }
-        throw new ParkingLotException("Ask for correct vehicle");
+    public int getVehicleLocation(Vehicle vehicle) {
+        return getVehicleLotNumber(vehicle);
     }
 }
 
