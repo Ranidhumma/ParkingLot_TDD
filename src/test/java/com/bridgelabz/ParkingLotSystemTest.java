@@ -3,6 +3,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
+
 public class ParkingLotSystemTest {
     private ParkingLotSystem parkingLotSystem;
     private String status;
@@ -164,8 +166,20 @@ public class ParkingLotSystemTest {
         int key = parkingLotSystem.getVehicleLocation(vehicle2);
         Assert.assertEquals(2, key);
     }
+    /**
+     * UC8 Test case for : parking lot owner wants to know the time when the car was parked
+     */
+    @Test
+    public void givenAVehicle_WhenParked_ShouldReturnTimeOfParking() {
+        try {
+            Vehicle vehicle1 = new Vehicle(1, "car1");
+            parkingLotSystem.carPark(vehicle1);
+            LocalDateTime localDateTime = LocalDateTime.now();
+            Assert.assertEquals(localDateTime,parkingLotSystem.getParkedTime());
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
 }
-
-
 
 

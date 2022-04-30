@@ -1,5 +1,5 @@
 package com.bridgelabz;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -8,14 +8,22 @@ import java.util.Map;
 public class ParkingLotSystem {
     Attendant attendant = new Attendant();
     private static final int MAX_PARKING_CAPACITY = 2;
-    private final Map<Integer, Vehicle> parkingLotMap;
+    private Map<Integer,Vehicle> parkingLotMap = new LinkedHashMap<>();
     public Vehicle vehicle;
     List<ParkingLotObserver> observers;
-//    private Object attendant;
+    private LocalDateTime time;
+
+
+    //    private Object attendant;
+
 
     public ParkingLotSystem() {
-        observers = new ArrayList<>();
-        parkingLotMap = new LinkedHashMap<>();
+        this.observers = new ArrayList<>();
+        attendant = new Attendant();
+        for(int i=1;i<=MAX_PARKING_CAPACITY;i++){
+            parkingLotMap.put(i,null);
+        }
+
     }
 
     /**
@@ -25,21 +33,30 @@ public class ParkingLotSystem {
      */
     public void carPark(Vehicle vehicle) throws ParkingLotException {
         if (this.parkingLotMap.containsValue(vehicle)) throw new ParkingLotException("vehicle is already there");
-        if (this.parkingLotMap.size() == MAX_PARKING_CAPACITY)
+        if (this.parkingLotMap.size() == MAX_PARKING_CAPACITY && !parkingLotMap.containsValue(null))
             throw new ParkingLotException("parking Lot is Full");
 
-        if (parkingLotMap.size() < MAX_PARKING_CAPACITY) {
+        //if (parkingLotMap.size() < MAX_PARKING_CAPACITY) {
+        if (this.parkingLotMap.containsValue(null)) {
             int key = attendant.parkTheVehicle(parkingLotMap);
             this.parkingLotMap.put(key, vehicle);
+            LocalDateTime localDateTime = LocalDateTime.now();
+            setParkedTime(localDateTime);
         }
 
-        if (this.parkingLotMap.size() < MAX_PARKING_CAPACITY) {
+        if (this.parkingLotMap.size() == MAX_PARKING_CAPACITY && !parkingLotMap.containsValue(null)) {
             String message = "Parking Lot is Full";
             for (ParkingLotObserver observer : observers) {
                 observer.update(message);
             }
         }
+
     }
+
+    private void setParkedTime(LocalDateTime time) {
+        this.time=time;
+    }
+
 
     /*
      * Method: checking the vehicle is Present or not if Present return true,
@@ -48,6 +65,12 @@ public class ParkingLotSystem {
      */
     public void carUnPark(Vehicle vehicle) throws ParkingLotException {
         Integer key = 0;
+        int nullCount = 0;
+        for (Map.Entry map : parkingLotMap.entrySet()) {
+            if (map.getValue() == null)
+                nullCount++;
+        }
+        if (nullCount == MAX_PARKING_CAPACITY) throw new ParkingLotException("parking lot is empty");
         if (this.parkingLotMap.isEmpty()) throw new ParkingLotException("parking lot is empty");
         if (this.parkingLotMap.containsValue(vehicle)) {
             for (Map.Entry map : parkingLotMap.entrySet()) {
@@ -55,8 +78,9 @@ public class ParkingLotSystem {
                     key = (Integer) map.getKey();
                 }
             }
-            this.parkingLotMap.remove(key);
-            if (this.parkingLotMap.size() < MAX_PARKING_CAPACITY) {
+            //      this.parkingLotMap.remove(key);
+            this.parkingLotMap.put(key, null);
+            if (this.parkingLotMap.containsValue(null)) {
                 for (ParkingLotObserver observer : observers) {
                     observer.update("Parking lot has space");
                 }
@@ -65,6 +89,8 @@ public class ParkingLotSystem {
         }
         throw new ParkingLotException("Ask for correct vehicle");
     }
+
+
 
     /*
      * @return if vehicle is parked return true else return false
@@ -79,6 +105,7 @@ public class ParkingLotSystem {
      */
 
     public boolean isVehicleUnPark(Vehicle vehicle) {
+
         if (!this.parkingLotMap.containsValue(vehicle)) return true;//checking for vehicle is unParked
         return false;
     }
@@ -96,9 +123,15 @@ public class ParkingLotSystem {
     }
 
     public int getVehicleLocation(Vehicle vehicle) {
+
         return getVehicleLotNumber(vehicle);
     }
+
+    public LocalDateTime getParkedTime() {
+        return this.time;
+    }
 }
+
 
 
 
