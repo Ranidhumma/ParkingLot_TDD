@@ -6,6 +6,7 @@ public class Owner implements ParkingLotObserver {
     private static String status;
     private int lotNumber;
     private int key;
+    private Object vehicle;
 
     /**
      * @param message -updating Status (message) to owner
@@ -15,19 +16,21 @@ public class Owner implements ParkingLotObserver {
         status = message;
     }
 
-    /*updated message*/
+    /*Method: updated message*/
     public String getStatus() {
         return status;
     }
 
     public int getKeyToPark(Map<Integer, Vehicle> parkingLotMap) {
-        lotNumber = 1;
-        if (parkingLotMap.isEmpty()) this.key = lotNumber;
         for (Map.Entry map : parkingLotMap.entrySet()) {
-            lotNumber++;
+            if (map.getValue() == null) {
+             this.key= (int) map.getKey();
+             break;
+            }
         }
-        this.key = lotNumber;
         return this.key;
     }
-
 }
+
+
+

@@ -6,7 +6,7 @@ public class Attendant {
     Owner owner = new Owner();
 
     /**
-     * Method : Park the vehicle method
+     * Method : Parking the vehicle
      * @return key to park vehicle
      */
     public int parkTheVehicle(Map<Integer, Vehicle> parkingLotMap) {

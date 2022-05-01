@@ -1,4 +1,5 @@
 package com.bridgelabz;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -7,27 +8,22 @@ import java.util.Map;
 
 public class ParkingLotSystem {
     Attendant attendant = new Attendant();
-    private static final int MAX_PARKING_CAPACITY = 2;
-    private Map<Integer,Vehicle> parkingLotMap = new LinkedHashMap<>();
+    private static final int MAX_PARKING_CAPACITY =4 ;
+    private Map<Integer, Vehicle> parkingLotMap = new LinkedHashMap<>();
     public Vehicle vehicle;
     List<ParkingLotObserver> observers;
     private LocalDateTime time;
 
-
-    //    private Object attendant;
-
-
     public ParkingLotSystem() {
         this.observers = new ArrayList<>();
         attendant = new Attendant();
-        for(int i=1;i<=MAX_PARKING_CAPACITY;i++){
-            parkingLotMap.put(i,null);
+        for (int i = 1; i <= MAX_PARKING_CAPACITY; i++) {
+            parkingLotMap.put(i, null);
         }
-
     }
 
     /**
-     * Method : checking the driver can park the vehicle or not
+     * Method : checking the driver can park the vehicle
      *
      * @throws ParkingLotException if lot is full, checking empty lot for parking vehicle
      */
@@ -39,7 +35,7 @@ public class ParkingLotSystem {
         //if (parkingLotMap.size() < MAX_PARKING_CAPACITY) {
         if (this.parkingLotMap.containsValue(null)) {
             int key = attendant.parkTheVehicle(parkingLotMap);
-            this.parkingLotMap.put(key, vehicle);
+            this.parkingLotMap.put(key,vehicle);
             LocalDateTime localDateTime = LocalDateTime.now();
             setParkedTime(localDateTime);
         }
@@ -54,14 +50,14 @@ public class ParkingLotSystem {
     }
 
     private void setParkedTime(LocalDateTime time) {
-        this.time=time;
+        this.time = time;
     }
 
 
     /*
-     * Method: checking the vehicle is Present or not if Present return true,
+     * Method: unParking vehicles
      *
-     * @throws ParkingLotException if parking lot is empty
+     * @throws ParkingLotException if parking lot is empty and  asked for unPark incorrect vehicle
      */
     public void carUnPark(Vehicle vehicle) throws ParkingLotException {
         Integer key = 0;
@@ -78,7 +74,7 @@ public class ParkingLotSystem {
                     key = (Integer) map.getKey();
                 }
             }
-            //      this.parkingLotMap.remove(key);
+            // this.parkingLotMap.remove(key);
             this.parkingLotMap.put(key, null);
             if (this.parkingLotMap.containsValue(null)) {
                 for (ParkingLotObserver observer : observers) {
@@ -90,10 +86,8 @@ public class ParkingLotSystem {
         throw new ParkingLotException("Ask for correct vehicle");
     }
 
-
-
     /*
-     * @return if vehicle is parked return true else return false
+     * @return true if vehicle is parked else return false
      */
 
     public boolean isVehiclePark(Vehicle vehicle) {
@@ -114,9 +108,13 @@ public class ParkingLotSystem {
         this.observers.add(observer);
     }
 
-    public int getVehicleLotNumber(Vehicle vehicle) {
-        for (Map.Entry map : parkingLotMap.entrySet()) {
-            if (map.getValue() == vehicle)
+    /**
+     *
+     * @return Vehicle lot number
+     */
+    public int getVehicleLotNumber(Vehicle vehicle){
+        for (Map.Entry map : parkingLotMap.entrySet()){
+            if(map.getValue()==vehicle)
                 return (int) map.getKey();
         }
         return 0;
@@ -128,6 +126,7 @@ public class ParkingLotSystem {
     }
 
     public LocalDateTime getParkedTime() {
+
         return this.time;
     }
 }

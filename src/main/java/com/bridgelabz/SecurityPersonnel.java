@@ -8,7 +8,7 @@ public class SecurityPersonnel implements ParkingLotObserver {
         status = message;
     }
 
-    /*update message*/
+
     public String getStatus() {
 
         return status;
