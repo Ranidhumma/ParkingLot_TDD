@@ -24,13 +24,10 @@ public class Owner implements ParkingLotObserver {
     public int getKeyToPark(Map<Integer, Vehicle> parkingLotMap) {
         for (Map.Entry map : parkingLotMap.entrySet()) {
             if (map.getValue() == null) {
-             this.key= (int) map.getKey();
-             break;
+                this.key = (int) map.getKey();
+                break;
             }
         }
         return this.key;
     }
 }
-
-
-
